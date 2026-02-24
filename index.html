@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Digital Restoran - Rasa Ria</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        .category-pill.active {
+            background-color: #ef4444;
+            color: white;
+            border-color: #ef4444;
+        }
+
+        .menu-card {
+            transition: all 0.3s ease;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        #cart-modal {
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 pb-24">
+
+    <!-- Header / Hero Section -->
+    <header class="relative h-64 bg-red-600 flex items-center justify-center text-white overflow-hidden">
+        <div class="absolute inset-0">
+            <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=1000&auto=format&fit=crop" alt="Latar Belakang Restoran" class="w-full h-full object-cover opacity-40">
+        </div>
+        <div class="relative text-center px-4">
+            <h1 class="text-4xl md:text-5xl font-bold mb-2">Restoran Rasa Ria</h1>
+            <p class="text-lg opacity-90">Nikmati Hidangan Tempatan yang Autentik</p>
+        </div>
+    </header>
+
+    <!-- Kategori Nav -->
+    <nav class="sticky top-0 bg-white shadow-md z-40 overflow-x-auto whitespace-nowrap py-4 px-6 flex gap-3 scrollbar-hide">
+        <button onclick="filterMenu('semua')" class="category-pill active px-5 py-2 rounded-full border border-gray-300 font-medium transition-all" id="btn-semua">Semua</button>
+        <button onclick="filterMenu('utama')" class="category-pill px-5 py-2 rounded-full border border-gray-300 font-medium transition-all" id="btn-utama">Nasi & Mee</button>
+        <button onclick="filterMenu('sampingan')" class="category-pill px-5 py-2 rounded-full border border-gray-300 font-medium transition-all" id="btn-sampingan">Sampingan</button>
+        <button onclick="filterMenu('minuman')" class="category-pill px-5 py-2 rounded-full border border-gray-300 font-medium transition-all" id="btn-minuman">Minuman</button>
+    </nav>
+
+    <!-- Kandungan Menu -->
+    <main class="max-w-6xl mx-auto px-4 mt-8">
+        <div id="menu-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            <!-- Item 1 -->
+            <div class="menu-card bg-white rounded-2xl shadow-sm overflow-hidden flex flex-col" data-category="utama">
+                <img src="https://images.unsplash.com/photo-1626074353765-517a681e40be?q=80&w=500&auto=format&fit=crop" alt="Nasi Lemak" class="h-48 w-full object-cover">
+                <div class="p-5 flex-grow">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-lg font-bold">Nasi Lemak Berlauk</h3>
+                        <span class="text-red-600 font-bold">RM 12.00</span>
+                    </div>
+                    <p class="text-gray-500 text-sm mb-4 leading-relaxed">Nasi lemak harum, sambal sotong, ayam goreng rempah, dan telur goyang.</p>
+                    <button onclick="addToCart('Nasi Lemak Berlauk', 12.00)" class="w-full bg-red-600 text-white py-2.5 rounded-xl font-semibold flex items-center justify-center gap-2 hover:bg-red-700 active:scale-95 transition">
+                        <i class="fas fa-plus"></i> Tambah ke Keranjang
+                    </button>
+                </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="menu-card bg-white rounded-2xl shadow-sm overflow-hidden flex flex-col" data-category="utama">
+                <img src="https://images.unsplash.com/photo-1617093727343-374698b1b08d?q=80&w=500&auto=format&fit=crop" alt="Mee Goreng" class="h-48 w-full object-cover">
+                <div class="p-5 flex-grow">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-lg font-bold">Mee Goreng Mamak Special</h3>
+                        <span class="text-red-600 font-bold">RM 9.50</span>
+                    </div>
+                    <p class="text-gray-500 text-sm mb-4 leading-relaxed">Mee goreng dengan sotong, tauhu, dan kentang goreng yang asli.</p>
+                    <button onclick="addToCart('Mee Goreng Mamak Special', 9.50)" class="w-full bg-red-600 text-white py-2.5 rounded-xl font-semibold flex items-center justify-center gap-2 hover:bg-red-700 active:scale-95 transition">
+                        <i class="fas fa-plus"></i> Tambah ke Keranjang
+                    </button>
+                </div>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="menu-card bg-white rounded-2xl shadow-sm overflow-hidden flex flex-col" data-category="sampingan">
+                <img src="https://images.unsplash.com/photo-1528663593402-0949a883733d?q=80&w=500&auto=format&fit=crop" alt="Satay" class="h-48 w-full object-cover">
+                <div class="p-5 flex-grow">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-lg font-bold">Satay Ayam (10 Cucuk)</h3>
+                        <span class="text-red-600 font-bold">RM 15.00</span>
+                    </div>
+                    <p class="text-gray-500 text-sm mb-4 leading-relaxed">Satay ayam bakar arang dihidangkan dengan kuah kacang pekat.</p>
+                    <button onclick="addToCart('Satay Ayam (10 Cucuk)', 15.00)" class="w-full bg-red-600 text-white py-2.5 rounded-xl font-semibold flex items-center justify-center gap-2 hover:bg-red-700 active:scale-95 transition">
+                        <i class="fas fa-plus"></i> Tambah ke Keranjang
+                    </button>
+                </div>
+            </div>
+
+            <!-- Item 4 -->
+            <div class="menu-card bg-white rounded-2xl shadow-sm overflow-hidden flex flex-col" data-category="minuman">
+                <img src="https://images.unsplash.com/photo-1594285149309-848466e31b6b?q=80&w=500&auto=format&fit=crop" alt="Teh Tarik" class="h-48 w-full object-cover">
+                <div class="p-5 flex-grow">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-lg font-bold">Teh Tarik Madu</h3>
+                        <span class="text-red-600 font-bold">RM 4.50</span>
+                    </div>
+                    <p class="text-gray-500 text-sm mb-4 leading-relaxed">Teh tarik berkrim dengan tambahan madu asli dan buih melimpah.</p>
+                    <button onclick="addToCart('Teh Tarik Madu', 4.50)" class="w-full bg-red-600 text-white py-2.5 rounded-xl font-semibold flex items-center justify-center gap-2 hover:bg-red-700 active:scale-95 transition">
+                        <i class="fas fa-plus"></i> Tambah ke Keranjang
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Floating Cart Button -->
+    <div id="cart-float" class="fixed bottom-6 left-1/2 -translate-x-1/2 w-full max-w-xs px-4 hidden">
+        <button onclick="toggleCart()" class="w-full bg-green-600 text-white py-4 rounded-full shadow-2xl flex items-center justify-between px-8 hover:bg-green-700 transition">
+            <div class="flex items-center gap-3">
+                <i class="fas fa-shopping-cart text-xl"></i>
+                <span id="cart-count" class="bg-white text-green-700 text-xs font-bold px-2 py-1 rounded-full">0</span>
+            </div>
+            <span class="font-bold">Lihat Keranjang</span>
+            <span id="cart-total-float" class="font-bold text-sm">RM 0.00</span>
+        </button>
+    </div>
+
+    <!-- Modal Keranjang -->
+    <div id="cart-modal" class="fixed inset-0 bg-black bg-opacity-50 z-[60] hidden flex items-end sm:items-center justify-center">
+        <div class="bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl max-h-[80vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold">Pesanan Anda</h2>
+                <button onclick="toggleCart()" class="text-gray-400 hover:text-black text-2xl"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <div id="cart-items-list" class="space-y-4 mb-8">
+                <!-- Items will be injected here -->
+                <p class="text-center text-gray-400">Keranjang anda kosong.</p>
+            </div>
+
+            <div class="border-t pt-4 space-y-2 mb-6 text-lg font-bold flex justify-between">
+                <span>Jumlah Keseluruhan:</span>
+                <span id="cart-grand-total" class="text-red-600">RM 0.00</span>
+            </div>
+
+            <button onclick="sendOrder()" class="w-full bg-green-500 text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-green-600 transition">
+                <i class="fab fa-whatsapp text-2xl"></i> Hantar Pesanan ke WhatsApp
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let cart = [];
+
+        function addToCart(name, price) {
+            const index = cart.findIndex(item => item.name === name);
+            if (index > -1) {
+                cart[index].qty += 1;
+            } else {
+                cart.push({ name, price, qty: 1 });
+            }
+            updateCartUI();
+        }
+
+        function removeFromCart(name) {
+            const index = cart.findIndex(item => item.name === name);
+            if (index > -1) {
+                if (cart[index].qty > 1) {
+                    cart[index].qty -= 1;
+                } else {
+                    cart.splice(index, 1);
+                }
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const list = document.getElementById('cart-items-list');
+            const count = document.getElementById('cart-count');
+            const totalFloat = document.getElementById('cart-total-float');
+            const grandTotal = document.getElementById('cart-grand-total');
+            const cartFloat = document.getElementById('cart-float');
+
+            if (cart.length === 0) {
+                list.innerHTML = '<p class="text-center text-gray-400 py-4">Keranjang anda masih kosong.</p>';
+                cartFloat.classList.add('hidden');
+                document.getElementById('cart-modal').classList.add('hidden');
+            } else {
+                cartFloat.classList.remove('hidden');
+                list.innerHTML = '';
+                let total = 0;
+                let totalItems = 0;
+
+                cart.forEach(item => {
+                    total += (item.price * item.qty);
+                    totalItems += item.qty;
+                    list.innerHTML += `
+                        <div class="flex justify-between items-center bg-gray-50 p-3 rounded-xl">
+                            <div>
+                                <p class="font-bold text-sm">${item.name}</p>
+                                <p class="text-xs text-gray-500">RM ${item.price.toFixed(2)} x ${item.qty}</p>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <button onclick="removeFromCart('${item.name}')" class="w-8 h-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center"><i class="fas fa-minus text-xs"></i></button>
+                                <span class="font-bold w-4 text-center">${item.qty}</span>
+                                <button onclick="addToCart('${item.name}', ${item.price})" class="w-8 h-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center"><i class="fas fa-plus text-xs"></i></button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                count.innerText = totalItems;
+                totalFloat.innerText = `RM ${total.toFixed(2)}`;
+                grandTotal.innerText = `RM ${total.toFixed(2)}`;
+            }
+        }
+
+        function toggleCart() {
+            const modal = document.getElementById('cart-modal');
+            modal.classList.toggle('hidden');
+        }
+
+        function filterMenu(category) {
+            const cards = document.querySelectorAll('.menu-card');
+            const buttons = document.querySelectorAll('.category-pill');
+
+            buttons.forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`btn-${category}`).classList.add('active');
+
+            cards.forEach(card => {
+                if (category === 'semua' || card.getAttribute('data-category') === category) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        function sendOrder() {
+            const phone = "60123456789"; // TUKAR KEPADA NOMBOR RESTORAN ANDA
+            let total = 0;
+            let orderText = "*PESANAN MENU DIGITAL*\n---------------------------\n";
+            
+            cart.forEach((item, index) => {
+                const subtotal = item.price * item.qty;
+                total += subtotal;
+                orderText += `${index + 1}. ${item.name} (x${item.qty}) - RM ${subtotal.toFixed(2)}\n`;
+            });
+
+            orderText += "---------------------------\n";
+            orderText += `*JUMLAH KESELURUHAN: RM ${total.toFixed(2)}*\n\n`;
+            orderText += "Sila sahkan pesanan saya. Terima kasih!";
+
+            const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(orderText)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
+</body>
+</html>
